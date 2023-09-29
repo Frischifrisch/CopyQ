@@ -47,8 +47,7 @@ re_title = re.compile(r'''
 def write_api(output_file, name, api, description, rtype):
     if rtype:
         api = f'{api} -> {rtype}'
-    output = '    addDocumentation("{}", "{}", "{}");\n'\
-        .format(name, api, description)
+    output = f'    addDocumentation("{name}", "{api}", "{description}");\n'
     output_file.write(output)
 
 
@@ -71,8 +70,7 @@ def main():
                 line = re.sub(r':js:[^:]*:`([^`]+)`', r'`\1`', line)
                 line = re.sub(r'/\*[^*]+\*/', r'', line)
 
-                match = re.match(re_title, line)
-                if match:
+                if match := re.match(re_title, line):
                     if name:
                         write_api(output_file, name, api, description, rtype)
                     name = match.group('function_name') or match.group('variable_name') or match.group('type_name')
@@ -81,13 +79,11 @@ def main():
                     rtype = None
                 elif not description or not description.endswith("."):
                     if description:
-                        description += " " + line.strip()
+                        description += f" {line.strip()}"
                     else:
                         description = line.strip()
-                else:
-                    rtype_match = re.match(r'^\s*:rtype: (?P<rtype>.+)', line)
-                    if rtype_match:
-                        rtype = rtype_match.group('rtype')
+                elif rtype_match := re.match(r'^\s*:rtype: (?P<rtype>.+)', line):
+                    rtype = rtype_match.group('rtype')
 
             if name:
                 write_api(output_file, name, api, description, rtype)
