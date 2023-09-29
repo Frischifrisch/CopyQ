@@ -111,9 +111,9 @@ def rename_font_family(path):
 
         name = rec.toUnicode()
         if name.startswith('Font Awesome'):
-            rec.string = name + ' (CopyQ)'
+            rec.string = f'{name} (CopyQ)'
         elif name.startswith('FontAwesome'):
-            rec.string = name + '(CopyQ)'
+            rec.string = f'{name}(CopyQ)'
 
         assert rec.toUnicode().endswith('(CopyQ)')
 

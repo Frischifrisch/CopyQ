@@ -6,6 +6,7 @@ Get the API key from: https://devzone.fosshub.com/dashboard/profile
 
 USAGE: ./fosshub.py <VERSION> <API_KEY>
 """
+
 import requests
 import sys
 
@@ -37,6 +38,6 @@ headers = {
 
 response = requests.post(fosshub_new_release_url, json=data, headers=headers)
 if response.status_code != 200:
-    raise RuntimeError('Unexpected response: ' + response.text)
+    raise RuntimeError(f'Unexpected response: {response.text}')
 
-print('All OK: ' + response.text)
+print(f'All OK: {response.text}')
